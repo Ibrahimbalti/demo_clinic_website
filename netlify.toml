@@ -1,5 +1,116 @@
 [build]
-  publish = "."
+  command = "npm run build"
+  publish = "dist"
+  functions = "netlify/functions"
 
-[dev]
-  publish = "."
+[functions]
+  node_bundler = "esbuild"
+
+[functions."scheduled-reminders"]
+  schedule = "*/5 * * * *"
+
+[functions."scheduled-daily-report"]
+  schedule = "0 6 * * *"
+
+[[redirects]]
+  from = "/api/auth/callback/google"
+  to = "/.netlify/functions/calendar/callback"
+  status = 200
+
+[[redirects]]
+  from = "/api/auth/*"
+  to = "/.netlify/functions/auth/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/api/appointments/*"
+  to = "/.netlify/functions/appointments/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/api/appointments"
+  to = "/.netlify/functions/appointments"
+  status = 200
+
+[[redirects]]
+  from = "/api/patients/*"
+  to = "/.netlify/functions/patients/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/api/patients"
+  to = "/.netlify/functions/patients"
+  status = 200
+
+[[redirects]]
+  from = "/api/doctors/*"
+  to = "/.netlify/functions/doctors/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/api/doctors"
+  to = "/.netlify/functions/doctors"
+  status = 200
+
+[[redirects]]
+  from = "/api/services/*"
+  to = "/.netlify/functions/services/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/api/services"
+  to = "/.netlify/functions/services"
+  status = 200
+
+[[redirects]]
+  from = "/api/whatsapp/*"
+  to = "/.netlify/functions/whatsapp/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/api/ai/*"
+  to = "/.netlify/functions/ai/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/api/calendar/*"
+  to = "/.netlify/functions/calendar/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/api/reminders/*"
+  to = "/.netlify/functions/reminders/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/api/reminders"
+  to = "/.netlify/functions/reminders"
+  status = 200
+
+[[redirects]]
+  from = "/api/reports/*"
+  to = "/.netlify/functions/reports/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/api/settings/*"
+  to = "/.netlify/functions/settings/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/api/settings"
+  to = "/.netlify/functions/settings"
+  status = 200
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
