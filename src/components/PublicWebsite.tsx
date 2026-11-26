@@ -43,9 +43,22 @@ import {
   type PublicPageRoute,
 } from './PublicSubpages';
 
+function getBasePrefix(): string {
+  if (typeof window === 'undefined') return '';
+  if (window.location.pathname.toLowerCase().startsWith('/demo_clinic_website')) {
+    return '/demo_clinic_website';
+  }
+  return '';
+}
+
 function resolveRouteFromLocation(): PublicPageRoute {
   if (typeof window === 'undefined') return 'home';
-  const path = window.location.pathname.toLowerCase().replace(/\/+$/, '') || '/';
+  const prefix = getBasePrefix().toLowerCase();
+  let path = window.location.pathname.toLowerCase();
+  if (prefix && path.startsWith(prefix)) {
+    path = path.slice(prefix.length);
+  }
+  path = path.replace(/\/+$/, '') || '/';
   const hash = window.location.hash.toLowerCase();
 
   if (path === '/about' || hash === '#about' || hash === '#about-section') return 'about';
@@ -176,7 +189,9 @@ export const PublicWebsite: React.FC<PublicWebsiteProps> = ({
     setPublicPage(page);
     setMobileMenuOpen(false);
     if (typeof window !== 'undefined') {
-      const targetUrl = ROUTE_TO_PATH[page] || '/';
+      const prefix = getBasePrefix();
+      const subPath = ROUTE_TO_PATH[page] || '/';
+      const targetUrl = prefix ? `${prefix}${subPath === '/' ? '/' : subPath}` : subPath;
       if (window.location.pathname !== targetUrl || window.location.hash) {
         window.history.pushState({ page }, '', targetUrl);
       }

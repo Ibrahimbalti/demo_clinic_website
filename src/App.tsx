@@ -12,7 +12,7 @@ export const App: React.FC = () => {
       if (
         params.has('admin') ||
         window.location.hash === '#admin' ||
-        window.location.pathname.startsWith('/admin')
+        window.location.pathname.endsWith('/admin')
       ) {
         return 'admin';
       }

@@ -166,6 +166,7 @@ function metaWhatsAppDevMiddleware(): Plugin {
 }
 
 export default defineConfig({
+  base: './',
   plugins: [react(), metaWhatsAppDevMiddleware()],
   resolve: {
     alias: {
